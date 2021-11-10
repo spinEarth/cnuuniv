@@ -112,6 +112,13 @@ class Myinfo{
   }
 
   Future <dynamic> homework () async{
+    /*
+        var param = {
+         term_year: selectArr[0], //2021
+         term_cd: selectArr[1], // 10은 1학기 11은 여름학기 20은 2학기
+         to_do_type: todoType //“P” 왜인줄은 모름.
+      }
+     */
     try{
       final response = await http.post(
         Uri.parse("https://dcs-learning.cnu.ac.kr/api/v1/week/getStdTodoList"),

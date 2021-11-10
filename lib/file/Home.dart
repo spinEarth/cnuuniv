@@ -98,37 +98,73 @@ class _HomeState extends State<Home> {
               if (snapshot.connectionState != ConnectionState.done) {
                 return Center(child: CircularProgressIndicator()); //대기 화면
               }
-              return SmartRefresher(
-                controller: _refreshController,
-                enablePullDown: true,
-                enablePullUp: false,
-                onRefresh: _onRefresh,
-                header: ClassicHeader(
-                  idleText: "",
-                  completeText: "",
-                  releaseText: "",
-                  refreshingText: "",
-                ),
-                child: ListView.separated(
-                    padding: EdgeInsets.all(10),
-                    separatorBuilder: (BuildContext context, int index) => const Divider(),
-                    itemCount: homework.length, //배열 갯수 만큼 list 칸을 만듬
-                    itemBuilder: (BuildContext context, int index) {
-                      return Container(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(height: 5,),
-                            Text("강의명 : " + homework[index]['item_title_temp'] + "  |  "+ check(homework[index]['module_type'])),
-                            Text("강좌명 : " + homework[index]['course_nm']),
-                            Text("최종기한 : " + homework[index]['info']),
-                            SizedBox(height: 5,),
-                          ],
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    height: 40,
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.only(left: 6, right: 6, top: 2, bottom: 2),
+                          child: OutlinedButton(
+                            onPressed: () {
+                              _onRefresh();
+                            },
+                            child: Text("기본순"),
+                          ),
                         ),
-                      );
-                    }),
-                //위로 당겨지면 뜨는 글자 설정
+                        Container(
+                          padding: EdgeInsets.only(left: 6, right: 6, top: 2, bottom: 2),
+                          child: OutlinedButton(
+                            onPressed: () {
+                              date();
+                            },
+                            child: Text("날짜순"),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Divider(thickness: 1, height: 1,),
+                  Container(
+                    height:  MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top - AppBar().preferredSize.height - 61,
+                    child: SmartRefresher(
+                      controller: _refreshController,
+                      enablePullDown: true,
+                      enablePullUp: false,
+                      onRefresh: _onRefresh,
+                      header: ClassicHeader(
+                        idleText: "",
+                        completeText: "",
+                        releaseText: "",
+                        refreshingText: "",
+                      ),
+                      child: ListView.separated(
+                          padding: EdgeInsets.all(10),
+                          separatorBuilder: (BuildContext context, int index) => const Divider(),
+                          itemCount: homework.length, //배열 갯수 만큼 list 칸을 만듬
+                          itemBuilder: (BuildContext context, int index) {
+                            return Container(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(height: 5,),
+                                  Text("강의명 : " + homework[index]['item_title_temp'] + "  |  "+ check(homework[index]['module_type'])),
+                                  Text("강좌명 : " + homework[index]['course_nm']),
+                                  Text("최종기한 : " + homework[index]['info']),
+                                  SizedBox(height: 5,),
+                                ],
+                              ),
+                            );
+                          }),
+                      //위로 당겨지면 뜨는 글자 설정
+                    ),
+                  ),
+                ],
               );
             }));
   }
@@ -162,6 +198,22 @@ class _HomeState extends State<Home> {
     else{
       return "null";
     }
+  }
+
+
+  void date(){
+    for(var i =0; i<homework.length; i++){
+      for(var j =0; j<homework.length -1 ; j++){
+        if(DateTime.parse(homework[j]['info']).compareTo(DateTime.parse(homework[j+1]['info'])) > 0 ){
+            var temp = homework[j];
+            homework[j] = homework[j+1];
+            homework[j+1] = temp;
+        }
+
+      }
+    }
+    setState(() {
+    });
   }
 
 

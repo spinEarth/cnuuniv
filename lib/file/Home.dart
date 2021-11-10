@@ -120,7 +120,7 @@ class _HomeState extends State<Home> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             SizedBox(height: 5,),
-                            Text("강의명 : " + homework[index]['item_title_temp']),
+                            Text("강의명 : " + homework[index]['item_title_temp'] + "  |  "+ check(homework[index]['module_type'])),
                             Text("강좌명 : " + homework[index]['course_nm']),
                             Text("최종기한 : " + homework[index]['info']),
                             SizedBox(height: 5,),
@@ -147,6 +147,21 @@ class _HomeState extends State<Home> {
     setState(() {
     });
     _refreshController.refreshCompleted();
+  }
+
+  String check(String value){
+    if(value == "LR"){
+      return "과제";
+    }
+    else if(value == "LS"){
+      return "자료";
+    }
+    else if(value == "LV"){
+      return "강의";
+    }
+    else{
+      return "null";
+    }
   }
 
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cnuuniv/main.dart';
 import 'package:cnuuniv/file/Home.dart';
+import 'package:cnuuniv/utility.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -77,22 +78,22 @@ class _LoginState extends State<Login> {
 
                               if (await myinfo.set(IDcontroller.text, PWcontroller.text) == 1) {
                                 print("1");
-                                showSnackbar("오류가 발생했습니다.");
+                                showSnackbar(context,"오류가 발생했습니다.");
                                 return;
                               }
                               if (await myinfo.load() == 1) {
                                 print("2");
-                                showSnackbar("오류가 발생했습니다.");
+                                showSnackbar(context,"오류가 발생했습니다.");
                                 return;
                               }
                               if (await myinfo.loginprepare() == 1) {
                                 print("3");
-                                showSnackbar("오류가 발생했습니다.");
+                                showSnackbar(context,"오류가 발생했습니다.");
                                 return;
                               }
                               if (await myinfo.login() == 1) {
                                 print("4");
-                                showSnackbar("오류가 발생했습니다.");
+                                showSnackbar(context,"오류가 발생했습니다.");
                                 return;
                               }
                               Navigator.pop(context);
@@ -106,24 +107,6 @@ class _LoginState extends State<Login> {
             ),
           );
         }));
-  }
-
-
-  void showSnackbar(String comment) {
-    //보여줄 메세지의 String을 input하면 됨. BuildContext context, 필요없는데 나중에 처리좀 ㅇㅇ..
-    ScaffoldMessenger.of(context)
-      ..removeCurrentSnackBar()
-      ..showSnackBar(
-        SnackBar(
-          content: Text(
-            comment,
-            textAlign: TextAlign.center,
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          backgroundColor: Colors.lightBlue, //snackbar 배경색
-          duration: Duration(seconds: 2), //2초동안 보여줌
-        ),
-      );
   }
 
 }

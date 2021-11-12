@@ -10,6 +10,8 @@ class Myinfo{
   String? jsessionId;
   String? authToken;
   String? RsaKey;
+  String? term_year = "2021";
+  String? term_cd = "20";
 
   Myinfo(){
     print("initialize");
@@ -121,10 +123,14 @@ class Myinfo{
       }
      */
     try{
+
+      String jsonString = '{"term_year" : "$term_year", "term_cd" : "$term_cd", "to_do_type" : "P"}';
+      String AESencrypt = Uri.encodeComponent(AESencryption(jsonString));
+
       final response = await http.post(
         Uri.parse("https://dcs-learning.cnu.ac.kr/api/v1/week/getStdTodoList"),
         headers: ({'content-type': 'application/x-www-form-urlencoded; charset=UTF-8', 'Cookie': '$authToken'}),
-        body: ('e='+'KFvMQEoHCB52Y6z06Y6FeIJ83sKYe3rzCXLu2vXQ3L2rKp1kZ98buDl2Yj9dFb70L0PA1wEmlUgzBJCrMhaYdw=='),
+        body: ('e='+'$AESencrypt'),
       );
       return response.bodyBytes;
     }
@@ -143,10 +149,13 @@ class Myinfo{
       }
      */
     try{
+      String jsonString = '{"term_year" : "$term_year", "term_cd" : "$term_cd", "is_current" : "Y"}';
+      String AESencrypt = Uri.encodeComponent(AESencryption(jsonString));
+
       final response = await http.post(
         Uri.parse("https://dcs-learning.cnu.ac.kr/api/v1/course/getStdMyCourseList"),
         headers: ({'content-type': 'application/x-www-form-urlencoded; charset=UTF-8', 'Cookie': '$authToken'}),
-        body: ('e='+'fbdMp2SAYsnW4bl6bzFS7qJHDjZGLUojHZJRX2fWo9YfP7OR4VBUHH61d7ktkmnnlJT5k9PsSSyAjZY2MY1eFg%3D%3D'),
+        body: ('e='+'$AESencrypt'),
       );
       return response.bodyBytes;
     }
@@ -161,10 +170,13 @@ class Myinfo{
     {type: 'notice', term_cd: '20', term_year: '2021', limit: 5, offset: 0}
      */
     try{
+      String jsonString = '{"type":"notice", "term_cd" : "$term_cd","term_year" : "$term_year", "limit" : "5", "offset" : "0"}';
+      String AESencrypt = Uri.encodeComponent(AESencryption(jsonString));
+
       final response = await http.post(
         Uri.parse("https://dcs-learning.cnu.ac.kr/api/v1/board/std/notice/list"),
         headers: ({'content-type': 'application/x-www-form-urlencoded; charset=UTF-8', 'Cookie': '$authToken'}),
-        body: ('e='+'GhK24SPuQxa4UvdNwexgmRQRoAIdPKu%2F8MIkxMmc54kkUTzyXydzx5iG%2BLmtJDKp%2FDAMmntDEC%2FI2%2BSHnQ5pTLuOYT28t%2BdM4zqLmF2yHPE%3D'),
+        body: ('e='+'$AESencrypt'),
       );
       return response.bodyBytes;
     }
@@ -223,6 +235,31 @@ class Myinfo{
       return '1';
     }
 
+  }
+
+
+  Future <dynamic> classload (String course_id, String class_no) async{
+    /*
+      var param = {
+        course_id: "202120UN0010362D0000005"
+         class_no: "05"
+         is_current: "N"
+      }
+     */
+    try{
+      String jsonString = '{"course_id" : "$course_id", "class_no" : "$class_no", "is_current" : "N"}';
+      String AESencrypt = Uri.encodeComponent(AESencryption(jsonString));
+
+      final response = await http.post(
+        Uri.parse("https://dcs-learning.cnu.ac.kr/api/v1/week/getStdWeekList"),
+        headers: ({'content-type': 'application/x-www-form-urlencoded; charset=UTF-8', 'Cookie': '$authToken'}),
+        body: ('e='+'$AESencrypt'),
+      );
+      return response.bodyBytes;
+    }
+    catch(e){
+      return '1';
+    }
   }
 
 

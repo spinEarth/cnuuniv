@@ -3,20 +3,15 @@ import 'dart:convert';
 import 'package:cnuuniv/main.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-
 class Doit extends StatefulWidget {
-
   @override
   _DoitState createState() => _DoitState();
 }
 
 class _DoitState extends State<Doit> {
-
-
   late List<dynamic> homework = [];
   late Future myFuture;
   RefreshController _refreshController = RefreshController(initialRefresh: false);
-
 
   @override
   void initState() {
@@ -24,8 +19,6 @@ class _DoitState extends State<Doit> {
     // TODO: implement initState
     super.initState();
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -65,9 +58,12 @@ class _DoitState extends State<Doit> {
                   ],
                 ),
               ),
-              Divider(thickness: 1, height: 1,),
+              Divider(
+                thickness: 1,
+                height: 1,
+              ),
               Container(
-                height:  MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top - AppBar().preferredSize.height - 121,
+                height: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top - AppBar().preferredSize.height - 121,
                 child: SmartRefresher(
                   controller: _refreshController,
                   enablePullDown: true,
@@ -89,11 +85,20 @@ class _DoitState extends State<Doit> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              SizedBox(height: 5,),
-                              Text("강의명 : " + homework[index]['item_title_temp'] + "  |  "+ check(homework[index]['module_type'])),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Wrap(
+                                children: [
+                                  buildtest(context, homework[index]['module_type']),
+                                  Text(" : "+ homework[index]['item_title_temp'])
+                                ],
+                              ),
                               Text("강좌명 : " + homework[index]['course_nm']),
                               Text("최종기한 : " + homework[index]['info']),
-                              SizedBox(height: 5,),
+                              SizedBox(
+                                height: 5,
+                              ),
                             ],
                           ),
                         );
@@ -115,43 +120,56 @@ class _DoitState extends State<Doit> {
     return;
   }
 
-  void _onRefresh() async{
+  void _onRefresh() async {
     await load();
-    setState(() {
-    });
+    setState(() {});
     _refreshController.refreshCompleted();
   }
 
-  String check(String value){
-    if(value == "LR"){
+  String check(String value) {
+    if (value == "LR") {
       return "과제";
-    }
-    else if(value == "LS"){
+    } else if (value == "LS") {
       return "자료";
-    }
-    else if(value == "LV"){
+    } else if (value == "LV") {
       return "강의";
-    }
-    else{
+    } else {
       return "null";
     }
   }
 
-
-  void date(){
-    for(var i =0; i<homework.length; i++){
-      for(var j =0; j<homework.length -1 ; j++){
-        if(DateTime.parse(homework[j]['info']).compareTo(DateTime.parse(homework[j+1]['info'])) > 0 ){
+  void date() {
+    for (var i = 0; i < homework.length; i++) {
+      for (var j = 0; j < homework.length - 1; j++) {
+        if (DateTime.parse(homework[j]['info']).compareTo(DateTime.parse(homework[j + 1]['info'])) > 0) {
           var temp = homework[j];
-          homework[j] = homework[j+1];
-          homework[j+1] = temp;
+          homework[j] = homework[j + 1];
+          homework[j + 1] = temp;
         }
-
       }
     }
-    setState(() {
-    });
+    setState(() {});
   }
+}
 
-
+Widget buildtest(BuildContext context, String module) {
+  if (module == "LV") {
+    return Text(
+      "강의",
+      style: TextStyle(backgroundColor: Colors.amberAccent),
+    );
+  } else if (module == "LS") {
+    return Text(
+      "자료",
+      style: TextStyle(backgroundColor: Colors.orange),
+    );
+  } else if (module == "LR") {
+    return Text(
+      "과제",
+      style: TextStyle(backgroundColor: Colors.greenAccent),
+    );
+  } else {
+    return Text("null");
+  }
+  return Text("null");
 }

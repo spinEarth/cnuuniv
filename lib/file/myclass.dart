@@ -94,6 +94,7 @@ class _MyClassState extends State<MyClass> {
                                         builder: (context) => ClassDetail(
                                           course_id: classlist[index]['course_id'],
                                           class_no: classlist[index]['class_no'],
+                                          class_name: classlist[index]['course_nm'],
                                         )));
 
                               },
@@ -123,8 +124,6 @@ class _MyClassState extends State<MyClass> {
     tmp = await myinfo.myclass();
     tmp = jsonDecode(utf8.decode(tmp));
     classlist = tmp['body']['course_list'];
-
-    print(classlist);
 
     tmp = await myinfo.mynotice();
     tmp = jsonDecode(utf8.decode(tmp));

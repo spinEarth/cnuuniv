@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:cnuuniv/main.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:cnuuniv/utility.dart';
 
 class Doit extends StatefulWidget {
   @override
@@ -63,7 +64,7 @@ class _DoitState extends State<Doit> {
                 height: 1,
               ),
               Container(
-                height: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top - AppBar().preferredSize.height - 121,
+                height: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top - AppBar().preferredSize.height - 125,
                 child: SmartRefresher(
                   controller: _refreshController,
                   enablePullDown: true,
@@ -80,28 +81,34 @@ class _DoitState extends State<Doit> {
                       separatorBuilder: (BuildContext context, int index) => const Divider(),
                       itemCount: homework.length, //배열 갯수 만큼 list 칸을 만듬
                       itemBuilder: (BuildContext context, int index) {
-                        return Container(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Wrap(
-                                children: [
-                                  buildtest(context, homework[index]['module_type']),
-                                  Text(" : "+ homework[index]['item_title_temp'])
-                                ],
-                              ),
-                              Text("강좌명 : " + homework[index]['course_nm']),
-                              Text("최종기한 : " + homework[index]['info']),
-                              SizedBox(
-                                height: 5,
-                              ),
-                            ],
-                          ),
-                        );
+                        return OutlineButton(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Wrap(
+                                  children: [
+                                    ClassType(context, homework[index]['module_type'], ""),
+                                    Text(" : " + homework[index]['item_title_temp'])
+                                  ],
+                                ),
+
+                                homework[index]['week_no'] != null?
+                                Text("강좌 : " + homework[index]['course_nm'] + " " + homework[index]['week_no'].toString() + "주차"):
+                                Text("강좌 : " + homework[index]['course_nm']),
+
+                                Text("최종기한 : " + homework[index]['info']),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                              ],
+                            ),
+                            onPressed: () {
+                              print(homework[index]);
+                            });
                       }),
                   //위로 당겨지면 뜨는 글자 설정
                 ),
@@ -116,7 +123,6 @@ class _DoitState extends State<Doit> {
     tmp = await myinfo.homework();
     tmp = jsonDecode(utf8.decode(tmp));
     homework = tmp['body']['todo_list'];
-    print(homework);
     return;
   }
 
@@ -124,18 +130,6 @@ class _DoitState extends State<Doit> {
     await load();
     setState(() {});
     _refreshController.refreshCompleted();
-  }
-
-  String check(String value) {
-    if (value == "LR") {
-      return "과제";
-    } else if (value == "LS") {
-      return "자료";
-    } else if (value == "LV") {
-      return "강의";
-    } else {
-      return "null";
-    }
   }
 
   void date() {
@@ -150,26 +144,4 @@ class _DoitState extends State<Doit> {
     }
     setState(() {});
   }
-}
-
-Widget buildtest(BuildContext context, String module) {
-  if (module == "LV") {
-    return Text(
-      "강의",
-      style: TextStyle(backgroundColor: Colors.amberAccent),
-    );
-  } else if (module == "LS") {
-    return Text(
-      "자료",
-      style: TextStyle(backgroundColor: Colors.orange),
-    );
-  } else if (module == "LR") {
-    return Text(
-      "과제",
-      style: TextStyle(backgroundColor: Colors.greenAccent),
-    );
-  } else {
-    return Text("null");
-  }
-  return Text("null");
 }

@@ -64,3 +64,48 @@ Future<String> showAlertDialog1(BuildContext context, String title, String conte
   }
   return result;
 }
+
+
+
+Widget ClassType(BuildContext context, String module, String type) {
+  if (module == "LV") {
+    if (type == "CONTENTSTYPE_PV") {
+      return Text(
+        "동영상",
+        style: TextStyle(backgroundColor: Colors.amberAccent),
+      );
+    } else if (type == "CONTENTSTYPE_W") {
+      return Text(
+        "웹콘텐츠",
+        style: TextStyle(backgroundColor: Colors.amberAccent),
+      );
+    } else if (type == "CONTENTSTYPE_Z") {
+      return Text(
+        "ZOOM",
+        style: TextStyle(backgroundColor: Colors.blueAccent),
+      );
+    } else if (type == "CONTENTSTYPE_U") {
+      return Text(
+        "유튜브",
+        style: TextStyle(backgroundColor: Colors.deepOrange),
+      );
+    } else {
+      return Text(
+        "강의",
+        style: TextStyle(backgroundColor: Colors.amberAccent),
+      );
+    }
+  } else if (module == "LS") {
+    return Text(
+      "자료",
+      style: TextStyle(backgroundColor: Colors.orange),
+    );
+  } else if (module == "LR") {
+    return Text(
+      "과제",
+      style: TextStyle(backgroundColor: Colors.greenAccent),
+    );
+  } else {
+    return Text("null");
+  }
+}

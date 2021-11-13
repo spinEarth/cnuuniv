@@ -86,8 +86,9 @@ class _HomeState extends State<Home> {
                 child: Container(
                   child: Column(
                     children: [
-                      Text("https://github.com/spinEarth", style: TextStyle(color: Colors.grey, fontSize: 11), softWrap: true),
-                      Text("전전통 준영이형 경민이형 감사합니다.", style: TextStyle(color: Colors.grey, fontSize: 11), softWrap: true),
+                      Text("https://github.com/spinEarth", style: TextStyle(color: Colors.grey, fontSize: 13), softWrap: true),
+                      Text("전정통 준영이형 경민이형", style: TextStyle(color: Colors.grey, fontSize: 13), softWrap: true),
+                      Text("철우형 지운이형 감사합니다.", style: TextStyle(color: Colors.grey, fontSize: 13), softWrap: true),
                     ],
                   ),
                 ),
